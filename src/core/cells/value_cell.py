@@ -48,5 +48,59 @@ class ValueCell(BaseCell):
             except TypeError:
                 return NotImplemented
             
-        #other algo operations incoming gotta go slep now bb
+        def __sub__(self, other: Any) -> Any:
+            if isinstance(other, ValueCell):
+                return self.evaluate() - other.evaluate()
+            try:
+                return self.evaluate() - other
+            except TypeError:
+                return NotImplemented
             
+        def __mul__(self, other: Any):
+            if isinstance(other, ValueCell):
+                return self.evaluate() * other.evaluate()
+            try:
+                return self.evaluate() * other
+            except TypeError:
+                return NotImplemented
+        
+        def __pow__(self, other: Any):
+            if isinstance(other, ValueCell):
+                return self.evaluate() ** other.evaluate()
+            try:
+                return self.evaluate() ** other
+            except TypeError:
+                return NotImplemented
+            
+        def __truediv__(self, other: Any):
+            if isinstance(other, ValueCell):
+                return self.evaluate() / other.evaluate()
+            try:
+                return self.evaluate() / other
+            except (TypeError, ZeroDivisionError):
+                return NotImplemented
+            
+        def __floordiv__(self, other: Any):
+            if isinstance(other, ValueCell):
+                return self.evaluate() // other.evaluate()
+            try:
+                return self.evaluate() // other
+            except (TypeError, ZeroDivisionError):
+                return NotImplemented
+            
+        def __moddiv__(self, other: Any):
+            if isinstance(other, ValueCell):
+                return self.evaluate() % other.evaluate()
+            try:
+                return self.evaluate() % other
+            except (TypeError, ZeroDivisionError):
+                return NotImplemented
+            
+        def __round__(self, n: int =0) -> Any:
+            return round(self.evaluate(), n)
+        
+        def __abs__(self) -> Any:
+            return abs(self.evaluate())
+        
+        def __negative__(self) -> Any:
+            return (-(self.evaluate()))
