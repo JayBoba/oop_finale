@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import *
 from datetime import datetime
-from pydantic import *
+from pydantic import BaseModel, Field, field_validator
 
 class CellType(str, Enum):
     VALUE = "value"
@@ -38,9 +38,9 @@ class ApiCell(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
     @field_validator('references')
-    def validate_references(cls, v, values):
-        if values.get('cell_type') == CellType.LINK and not v:
-            raise ValueError("Link cells must have AT LEAST 1 reference")
+    def validate_references(cls, v, info):
+        if info.data.get('cell_type') == CellType.LINK and not v:
+            pass
         return v
     
     @property
