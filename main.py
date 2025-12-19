@@ -1,12 +1,14 @@
 import argparse
 import sys
+import os
+from dotenv import load_dotenv
 from typing import Dict, Set
 from src.api.client import APIClient
 from src.core.tables.table import Table
 from src.core.tables.excel_writer import ExcelWriter
 from src.api.models import ApiTable, ApiCell, CellType, CellReference
 
-DEFAULT_TOKEN = "g2q0z8PSJKIoSRF81q7kG7EaCKYEDpwQKPhZaAAI"
+load_dotenv()
 
 def main():
     parser = argparse.ArgumentParser(description="Export buildin.ai tables to Excel.")
@@ -17,7 +19,14 @@ def main():
 
     args = parser.parse_args()
 
-    client = APIClient(token=DEFAULT_TOKEN)
+    token = os.getenv("BUILDIN_AI_TOKEN")
+    if not token and not args.test:
+        print("Error: BUILDIN_AI_TOKEN environment variable not set.")
+        sys.exit(1)
+
+        token = "dummy_token"
+
+    client = APIClient(token=token)
 
     if args.test:
         print("Running in TEST mode with mock data.")
