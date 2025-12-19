@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, field_validator
 
 class CellType(str, Enum):
     VALUE = "value"
-    FOMRULA = "formula"
+    FORMULA = "formula"
     LINK = "link"
     EMPTY = "empty"
 
@@ -37,7 +37,7 @@ class ApiCell(BaseModel):
     reference: List[CellReference] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
-    @field_validator('references')
+    @field_validator('reference')
     def validate_references(cls, v, info):
         if info.data.get('cell_type') == CellType.LINK and not v:
             pass
